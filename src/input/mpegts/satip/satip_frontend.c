@@ -1083,6 +1083,10 @@ __ver12:
           mmi->tii_stats.snr = atoi(argv[3]) * 0xffff / 15;
           mmi->tii_stats.snr_scale =
             SIGNAL_STATUS_SCALE_RELATIVE;
+          if (status == SIGNAL_GOOD && mmi->tii_stats.signal == 0) {
+            /* XORO reports signal=0 when locked */
+            mmi->tii_stats.signal = 50 * 0xffff / 100;
+          }
           goto ok;          
         } else if (strncmp(s, "ver=1.1;tuner=", 14) == 0) {
           n = http_tokenize(s + 14, argv, 4, ',');
